@@ -140,8 +140,6 @@ baseer-financial-agent/
 
 ---
 
-## 📸 Screenshots
-
 ### Financial Dashboard
 
 Modern financial dashboard with live market indicators, source tracking, and AI-generated executive reports.
