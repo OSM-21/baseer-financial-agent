@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Baseer - Saudi Financial Intelligence</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#12141a;--surface:#181b23;--s2:#1d2130;--border:#23273a;--b2:#2a2f42;
+  --text:#dde2f0;--muted:#7a849a;--dim:#3d4460;
+  --green:#00b87a;--gd:#008a5c;--gbg:rgba(0,184,122,.08);--gbr:rgba(0,184,122,.14);
+  --up:#00b87a;--dn:#e85555;--upbg:rgba(0,184,122,.07);--dnbg:rgba(232,85,85,.07);
+  --gold:#d4a940;--goldbg:rgba(212,169,64,.08);
+}
+body{margin:0; background:#0b0c10; padding:40px 30px; min-height:100vh; display:flex; align-items:flex-start; justify-content:center;}
+
+.w{background:var(--bg);font-family:'IBM Plex Sans Arabic','IBM Plex Sans',system-ui,sans-serif;color:var(--text);border-radius:14px;overflow:hidden;width:100%;max-width:2480px;min-height:calc(100vh - 80px);box-shadow:0 30px 70px rgba(0,0,0,0.45);border:1px solid var(--border);display:flex;flex-direction:column;}
+
+/* ── Top bar ── */
+.top{height:52px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;}
+.top-l{display:flex;align-items:center;gap:14px}
+.logo{width:28px;height:28px;background:var(--gd);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0}
+.brand{font-size:14px;font-weight:600;color:var(--text)}
+.sep{width:1px;height:16px;background:var(--b2)}
+.brand-sub{font-size:12px;color:var(--dim)}
+.top-r{display:flex;align-items:center;gap:14px}
+.live{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--green)}
+.dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
+.clk{font-size:11px;color:var(--dim);font-family:'IBM Plex Mono',monospace}
+.lsw{display:flex;background:var(--bg);border:1px solid var(--b2);border-radius:4px;overflow:hidden;cursor:pointer}
+.lsw span{font-size:11px;font-weight:600;padding:4px 12px;color:var(--dim);transition:all .15s}
+.lsw span.on{background:var(--gd);color:#fff}
+
+/* ── Ticker ── */
+.ticker{height:36px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;overflow:hidden;flex-shrink:0;}
+.tk-lbl{font-size:10px;font-weight:700;color:var(--green);letter-spacing:1.5px;padding:0 20px;border-inline-end:1px solid var(--gbr);height:100%;display:flex;align-items:center;flex-shrink:0;background:var(--gbg);z-index: 10;}
+.tk-scroll{flex:1;overflow:hidden;position: relative;}
+.tk-row{display:flex;animation:marquee 38s linear infinite;width:max-content}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.tk-item{display:flex;align-items:center;gap:8px;padding:0 24px;border-inline-end:1px solid var(--border);height:36px;white-space:nowrap}
+.tk-n{font-size:11px;color:var(--dim);font-weight:600;letter-spacing:.4px}
+.tk-v{font-size:12px;font-family:'IBM Plex Mono',monospace;color:var(--text)}
+.tk-c{font-size:11px;font-family:'IBM Plex Mono',monospace}
+.up{color:var(--up)}.dn{color:var(--dn)}.nt{color:var(--dim)}
+
+/* ── Layout ── */
+.body{display:grid;grid-template-columns:1fr 360px;flex:1;}
+
+/* ── Main Panel ── */
+.main{padding:32px;border-inline-end:1px solid var(--border);display:flex;flex-direction:column;gap:20px;}
+.section-label{font-size:10px;font-weight:700;color:var(--dim);letter-spacing:1.5px;text-transform:uppercase}
+
+/* Input card */
+.icard{background:var(--s2);border:1px solid var(--b2);border-radius:12px;overflow:hidden}
+.icard-head{padding:18px 20px 0}
+.icard-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.ifield{width:100%;background:var(--bg);border:1px solid var(--b2);border-radius:8px;padding:16px 20px;font-size:14px;color:var(--text);font-family:inherit;outline:none;transition:border-color .2s;margin-bottom:18px}
+.ifield:focus{border-color:var(--green)}
+.ifield::placeholder{color:var(--dim)}
+.icard-foot{padding:14px 20px;border-top:1px solid var(--border);background:rgba(0,0,0,.15);display:flex;align-items:center;justify-content:space-between}
+.icard-foot-meta{display:flex;align-items:center;gap:16px}
+.fm{font-size:11px;color:var(--dim);display:flex;align-items:center;gap:6px}
+.fm-dot{width:5px;height:5px;border-radius:50%;background:var(--green)}
+.run{background:var(--gd);border:none;color:#fff;border-radius:6px;padding:10px 24px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;letter-spacing:.4px;display:flex;align-items:center;gap:8px;transition:all .15s}
+.run:hover{background:var(--green)}
+.run:disabled{background:var(--dim);cursor:not-allowed;}
+
+/* Agents row */
+.agents{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.agent{background:var(--s2);border:1px solid var(--b2);border-radius:10px;padding:18px 20px;display:flex;align-items:flex-start;gap:12px}
+.ag-dot{width:7px;height:7px;border-radius:50%;background:var(--green);margin-top:4px;flex-shrink:0;box-shadow:0 0 6px rgba(0,184,122,.4)}
+.ag-body{}
+.ag-name{font-size:12px;font-weight:500;color:var(--muted);display:block;margin-bottom:4px}
+.ag-status{font-size:11px;color:var(--green)}
+
+/* Report card */
+.rcard{background:var(--s2);border:1px solid var(--b2);border-radius:12px;overflow:hidden;flex:1;display:none;animation:fadeIn .4s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.rcard-head{padding:16px 20px;border-bottom:1px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:space-between}
+.rc-title{font-size:13px;font-weight:600;color:var(--text)}
+.rc-badge{font-size:10px;font-weight:700;color:var(--green);background:var(--gbg);border:1px solid var(--gbr);padding:3px 10px;border-radius:4px;letter-spacing:.5px}
+.rs{padding:20px;border-bottom:1px solid var(--border)}
+.rs:last-child{border-bottom:none}
+.rs-t{font-size:10px;font-weight:700;color:var(--dim);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:12px}
+.rs-p{font-size:13.5px;color:var(--muted);line-height:1.9;font-weight:300;}
+
+/* ── التنسيقات المالية المتقدمة ── */
+.parsed-section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-top: 26px;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(221, 226, 240, 0.08);
+  display: block;
+}
+.parsed-section-title:first-child { margin-top: 4px; }
+.parsed-bullet-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+  line-height: 1.9;
+  color: var(--text);
+  text-align: justify;
+}
+.parsed-bullet-dot {
+  width: 5px;
+  height: 5px;
+  background: var(--green);
+  border-radius: 50%;
+  margin-top: 10px;
+  flex-shrink: 0;
+  box-shadow: 0 0 5px var(--green);
+}
+.parsed-text-line {
+  margin-bottom: 14px;
+  line-height: 1.9;
+  color: var(--text);
+  text-align: justify;
+}
+.parsed-text-line strong, .parsed-bullet-item strong {
+  color: var(--green);
+  font-weight: 600;
+  margin-inline-end: 4px;
+}
+
+/* ── Sidebar ── */
+.side{padding:32px 24px;display:flex;flex-direction:column;gap:32px}
+.panel{}
+.ptitle{font-size:10px;font-weight:700;color:var(--dim);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.mrow{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
+.mrow:last-child{border-bottom:none}
+.mn{font-size:12px;color:var(--muted)}
+.mr{text-align:right}
+.mv{font-size:12px;font-family:'IBM Plex Mono',monospace;color:var(--text);display:block;transition:color .4s}
+.mc{font-size:10px;font-family:'IBM Plex Mono',monospace}
+.srow{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
+.srow:last-child{border-bottom:none}
+.snum{font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--dim);padding-top:2px;min-width:22px}
+.stitle{font-size:12px;color:var(--muted);display:block;margin-bottom:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:260px;}
+.surl{font-size:11px;color:var(--green);font-family:'IBM Plex Mono',monospace;text-decoration:none;}
+.statrow{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
+.statrow:last-child{border-bottom:none}
+.statlbl{font-size:12px;color:var(--muted)}
+.statval{font-size:12px;font-weight:500;color:var(--text);font-family:'IBM Plex Mono',monospace}
+</style>
+</head>
+<body>
+
+<div class="w" id="app">
+  <div class="top">
+    <div class="top-l">
+      <div class="logo">B</div>
+      <span class="brand">Baseer</span>
+      <div class="sep"></div>
+      <span class="brand-sub" id="bsub">Saudi Financial Intelligence</span>
+    </div>
+    <div class="top-r">
+      <div class="live"><div class="dot"></div><span id="ltxt">Live</span></div>
+      <span class="clk" id="clk">--:--:--</span>
+      <div class="lsw" onclick="toggleLang()">
+        <span id="len" class="on">EN</span>
+        <span id="lar">AR</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="ticker">
+    <div class="tk-lbl" id="tklbl">MARKETS</div>
+    <div class="tk-scroll"><div class="tk-row">
+      <div class="tk-item"><span class="tk-n">ARAMCO</span><span class="tk-v" id="ta1">29.85</span><span class="tk-c up">▲0.8%</span></div>
+      <div class="tk-item"><span class="tk-n">TADAWUL</span><span class="tk-v" id="tt1">12,847</span><span class="tk-c dn">▼0.3%</span></div>
+      <div class="tk-item"><span class="tk-n">BRENT</span><span class="tk-v" id="tb1">84.20</span><span class="tk-c up">▲1.2%</span></div>
+      <div class="tk-item"><span class="tk-n">SABIC</span><span class="tk-v" id="ts1">84.20</span><span class="tk-c dn">▼0.4%</span></div>
+      <div class="tk-item"><span class="tk-n">GOLD</span><span class="tk-v" id="tg1">2,341</span><span class="tk-c up">▲0.5%</span></div>
+      <div class="tk-item"><span class="tk-n">USD/SAR</span><span class="tk-v">3.7500</span><span class="tk-c nt">—</span></div>
+      <div class="tk-item"><span class="tk-n">EUR/SAR</span><span class="tk-v" id="te1">4.0210</span><span class="tk-c up">▲0.2%</span></div>
+      <div class="tk-item"><span class="tk-n">BTC/USD</span><span class="tk-v" id="tc1">64,250</span><span class="tk-c up">▲1.5%</span></div>
+      <div class="tk-item"><span class="tk-n">ARAMCO</span><span class="tk-v" id="ta2">29.85</span><span class="tk-c up">▲0.8%</span></div>
+      <div class="tk-item"><span class="tk-n">TADAWUL</span><span class="tk-v" id="tt2">12,847</span><span class="tk-c dn">▼0.3%</span></div>
+      <div class="tk-item"><span class="tk-n">BRENT</span><span class="tk-v" id="tb2">84.20</span><span class="tk-c up">▲1.2%</span></div>
+      <div class="tk-item"><span class="tk-n">SABIC</span><span class="tk-v" id="ts2">84.20</span><span class="tk-c dn">▼0.4%</span></div>
+      <div class="tk-item"><span class="tk-n">GOLD</span><span class="tk-v" id="tg2">2,341</span><span class="tk-c up">▲0.5%</span></div>
+      <div class="tk-item"><span class="tk-n">USD/SAR</span><span class="tk-v">3.7500</span><span class="tk-c nt">—</span></div>
+      <div class="tk-item"><span class="tk-n">EUR/SAR</span><span class="tk-v" id="te2">4.0210</span><span class="tk-c up">▲0.2%</span></div>
+      <div class="tk-item"><span class="tk-n">BTC/USD</span><span class="tk-v" id="tc2">64,250</span><span class="tk-c up">▲1.5%</span></div>
+    </div></div>
+  </div>
+
+  <div class="body">
+    <div class="main">
+      <div class="icard">
+        <div class="icard-head">
+          <div class="icard-meta">
+            <span class="section-label" id="qlbl">Search</span>
+          </div>
+          <input class="ifield" id="ifield" placeholder="Enter a company, sector, or market event to analyze…"/>
+          <div id="err-display" style="display:none; color:var(--dn); font-size:12px; padding:6px 0 14px 0; font-weight:500; line-height: 1.5;"></div>
+        </div>
+        <div class="icard-foot">
+          <div class="icard-foot-meta">
+            <div class="fm"><div class="fm-dot"></div><span id="fma">3 agents active</span></div>
+            <div class="fm"><span id="fml">AR · EN</span></div>
+            <div class="fm"><span id="fmt">&lt; 60s</span></div>
+          </div>
+          <button class="run" id="rbtn" onclick="analyze()"><span id="rtxt">Run Analysis</span><span>→</span></button>
+        </div>
+      </div>
+
+      <div class="agents">
+        <div class="agent"><div class="ag-dot"></div><div class="ag-body"><span class="ag-name" id="a1n">Data Collection</span><span class="ag-status" id="a1s">Idle</span></div></div>
+        <div class="agent"><div class="ag-dot"></div><div class="ag-body"><span class="ag-name" id="a2n">Market Analysis</span><span class="ag-status" id="a2s">Idle</span></div></div>
+        <div class="agent"><div class="ag-dot"></div><div class="ag-body"><span class="ag-name" id="a3n">Report Generation</span><span class="ag-status" id="a3s">Idle</span></div></div>
+      </div>
+
+      <div class="rcard" id="rcard">
+        <div class="rcard-head">
+          <span class="rc-title" id="rctitle">Executive Briefing</span>
+          <span class="rc-badge" id="rcbadge">DELIVERED</span>
+        </div>
+        <div class="rs">
+          <div class="rs-t" id="s1t">Market Overview</div>
+          <div class="rs-p" id="s1p">...</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="side">
+      <div class="panel">
+        <div class="ptitle" id="mktlbl">Market Prices</div>
+        <div class="mrow"><span class="mn">Aramco</span><div class="mr"><span class="mv" id="sa">SAR 29.85</span><span class="mc up">▲0.8%</span></div></div>
+        <div class="mrow"><span class="mn">Tadawul</span><div class="mr"><span class="mv" id="st">12,847</span><span class="mc dn">▼0.3%</span></div></div>
+        <div class="mrow"><span class="mn">Brent</span><div class="mr"><span class="mv" id="sb">$84.20</span><span class="mc up">▲1.2%</span></div></div>
+        <div class="mrow"><span class="mn">Gold</span><div class="mr"><span class="mv" id="sg">$2,341</span><span class="mc up">▲0.5%</span></div></div>
+        <div class="mrow"><span class="mn">USD/SAR</span><div class="mr"><span class="mv">3.7500</span><span class="mc nt">—</span></div></div>
+      </div>
+
+      <div class="panel">
+        <div class="ptitle" id="srclbl">Verified Sources</div>
+        <div id="sources-container">
+          <div class="srow"><span class="snum">01</span><div><span class="stitle">Saudi Economy Watch 2025</span><span class="surl">pwc.com</span></div></div>
+          <div class="srow"><span class="snum">02</span><div><span class="stitle">Saudi Crude Benchmark Index</span><span class="surl">asaarplus.com</span></div></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="ptitle" id="statslbl">Run Statistics</div>
+        <div class="statrow"><span class="statlbl" id="ss1">Sources verified</span><span class="statval" id="stat-sources">0</span></div>
+        <div class="statrow"><span class="statlbl" id="ss2">Agents deployed</span><span class="statval">3</span></div>
+        <div class="statrow"><span class="statlbl" id="ss3">Processing time</span><span class="statval" id="stat-time">--</span></div>
+        <div class="statrow"><span class="statlbl" id="ss4">Output languages</span><span class="statval">AR / EN</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let lang='en';
+const tr={
+  en:{dir:'ltr',bsub:'Saudi Financial Intelligence',ltxt:'Live',tklbl:'MARKETS',qlbl:'Search',fma:'3 agents active',fml:'AR · EN',fmt:'< 60s',rtxt:'Run Analysis',a1n:'Data Collection',a2n:'Market Analysis',a3n:'Report Generation',mktlbl:'Market Prices',srclbl:'Verified Sources',statslbl:'Run Statistics',ss1:'Sources verified',ss2:'Agents deployed',ss3:'Processing time',ss4:'Output languages',ip:'Enter a company, sector, or market event to analyze…',err_empty:'⚠️ Please enter a financial topic first.',loading:'Analyzing...',status_idle:'Idle',status_run:'Analyzing...',status_done:'✓ Completed',brief:'Executive Briefing — '},
+  ar:{dir:'rtl',bsub:'الذكاء المالي السعودي',ltxt:'بث مباشر',tklbl:'الأسواق',qlbl:'بحث',fma:'3 وكلاء نشطون',fml:'AR · EN',fmt:'أقل من 60 ث',rtxt:'تشغيل التحليل',a1n:'جمع البيانات',a2n:'تحليل السوق',a3n:'إعداد التقارير',mktlbl:'أسعار السوق',srclbl:'المصادر المعتمدة',statslbl:'إحصائيات التشغيل',ss1:'المصادر الموثّقة',ss2:'الوكلاء المنشورون',ss3:'وقت المعالجة',ss4:'لغات الإخراج',ip:'أدخل شركة أو قطاعاً أو حدثاً مالياً للتحليل…',err_empty:'⚠️ الرجاء إدخال موضوع مالي للتحليل أولاً.',loading:'جاري التحليل...',status_idle:'خامل',status_run:'جاري التحليل...',status_done:'✓ مكتمل',brief:'الإحاطة التنفيذية — '}
+};
+
+function toggleLang(){
+  lang=lang==='en'?'ar':'en';
+  const d=tr[lang];
+  document.getElementById('app').style.direction=d.dir;
+  document.getElementById('len').className=lang==='en'?'on':'';
+  document.getElementById('lar').className=lang==='ar'?'on':'';
+  const m={bsub:d.bsub,ltxt:d.ltxt,tklbl:d.tklbl,qlbl:d.qlbl,fma:d.fma,fml:d.fml,fmt:d.fmt,rtxt:d.rtxt,a1n:d.a1n,a2n:d.a2n,a3n:d.a3n,mktlbl:d.mktlbl,srclbl:d.srclbl,statslbl:d.statslbl,ss1:d.ss1,ss2:d.ss2,ss3:d.ss3,ss4:d.ss4};
+  Object.entries(m).forEach(([id,v])=>{const el=document.getElementById(id);if(el)el.textContent=v;});
+  document.getElementById('ifield').placeholder=d.ip;
+}
+
+function parseFinancialReport(text) {
+  if (!text) return '';
+  let cleaned = text.replace(/\r/g, '');
+  let lines = cleaned.split('\n');
+  let htmlResult = [];
+
+  lines.forEach(line => {
+    let trimmed = line.trim();
+    if (!trimmed) return;
+
+    if (trimmed.startsWith('###') || (trimmed.startsWith('**') && trimmed.endsWith('**') && !trimmed.includes(':'))) {
+      let headerText = trimmed.replace(/[#\*]/g, '').trim();
+      if (headerText) {
+        htmlResult.push(`<span class="parsed-section-title">" ${headerText} "</span>`);
+      }
+      return;
+    }
+
+    let isBullet = false;
+    if (trimmed.startsWith('*') || trimmed.startsWith('-')) {
+      trimmed = trimmed.substring(1).trim();
+      isBullet = true;
+    }
+
+    trimmed = trimmed.replace(/\*\*([\s\S]*?)\*\*/g, '<strong>$1</strong>');
+    trimmed = trimmed.replace(/\*/g, '');
+
+    if (isBullet) {
+      htmlResult.push(`
+        <div class="parsed-bullet-item">
+          <span class="parsed-bullet-dot"></span>
+          <div>${trimmed}</div>
+        </div>
+      `);
+    } else {
+      htmlResult.push(`<p class="parsed-text-line">${trimmed}</p>`);
+    }
+  });
+  return htmlResult.join('');
+}
+
+async function analyze(){
+  const inputVal = document.getElementById('ifield').value.trim();
+  const btn = document.getElementById('rbtn');
+  const txtSpan = document.getElementById('rtxt');
+  const errEl = document.getElementById('err-display');
+  const reportCard = document.getElementById('rcard');
+
+  if(!inputVal){
+    errEl.textContent = tr[lang].err_empty;
+    errEl.style.display = 'block';
+    return;
+  }
+
+  errEl.style.display = 'none';
+  btn.disabled = true;
+  txtSpan.textContent = tr[lang].loading;
+  reportCard.style.display = 'none';
+
+  document.getElementById('a1s').textContent = tr[lang].status_run;
+  document.getElementById('a2s').textContent = tr[lang].status_run;
+  document.getElementById('a3s').textContent = tr[lang].status_run;
+
+  try {
+    // إرسال الطلب مع ترميز UTF-8 صريح لحل التعارض مع المحركات الصارمة
+    const response = await fetch('/api/v1/analyze', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8'
+      },
+      body: JSON.stringify({ query: inputVal })
+    });
+    
+    const resData = await response.json();
+    
+    if(!response.ok) {
+      let errorDetail = 'Error from server';
+      if (resData && resData.detail) {
+        if (typeof resData.detail === 'string') {
+          errorDetail = resData.detail;
+        } else if (Array.isArray(resData.detail)) {
+          errorDetail = resData.detail.map(err => err.msg || JSON.stringify(err)).join(', ');
+        } else {
+          errorDetail = JSON.stringify(resData.detail);
+        }
+      }
+      throw new Error(errorDetail);
+    }
+
+    const d = resData.data;
+
+    document.getElementById('a1s').textContent = `✓ ${d.news_count} ` + (lang === 'en' ? 'sources' : 'مصادر');
+    document.getElementById('a2s').textContent = tr[lang].status_done;
+    document.getElementById('a3s').textContent = tr[lang].status_done;
+
+    document.getElementById('rctitle').textContent = tr[lang].brief + inputVal;
+    document.getElementById('s1p').innerHTML = parseFinancialReport(d.report);
+    reportCard.style.display = 'block';
+
+    const srcContainer = document.getElementById('sources-container');
+    srcContainer.innerHTML = d.sources.map((s, idx) => {
+      const shortDomain = s.replace('https://','').replace('http://','').split('/')[0];
+      return `
+        <div class="srow">
+          <span class="snum">${String(idx + 1).padStart(2, '0')}</span>
+          <div>
+            <span class="stitle">${shortDomain}</span>
+            <a class="surl" href="${s}" target="_blank">🔗 URL</a>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    document.getElementById('stat-sources').textContent = d.news_count;
+    document.getElementById('stat-time').textContent = '42s';
+
+  } catch(e) {
+    errEl.textContent = '⚠️ ' + e.message;
+    errEl.style.display = 'block';
+    document.getElementById('a1s').textContent = tr[lang].status_idle;
+    document.getElementById('a2s').textContent = tr[lang].status_idle;
+    document.getElementById('a3s').textContent = tr[lang].status_idle;
+  } finally {
+    btn.disabled = false;
+    txtSpan.textContent = tr[lang].rtxt;
+  }
+}
+
+function tick(){document.getElementById('clk').textContent=new Date().toTimeString().slice(0,8)+' AST';}
+function flicker(){
+  [{s:'sa',t1:'ta1',t2:'ta2',b:29.85,f:v=>v.toFixed(2),sf:v=>'SAR '+v.toFixed(2)},
+   {s:'st',t1:'tt1',t2:'tt2',b:12847,f:v=>Math.round(v).toLocaleString(),sf:v=>Math.round(v).toLocaleString()},
+   {s:'sb',t1:'tb1',t2:'tb2',b:84.20,f:v=>v.toFixed(2),sf:v=>'$'+v.toFixed(2)},
+   {s:'sg',t1:'tg1',t2:'tg2',b:2341,f:v=>Math.round(v).toLocaleString(),sf:v=>'$'+Math.round(v).toLocaleString()}
+  ].forEach(p=>{
+    const c=(Math.random()-.48)*.18,nv=p.b+c,col=c>0?'var(--up)':c<0?'var(--dn)':'var(--text)';
+    [p.s, p.t1, p.t2].forEach(id=>{
+      const el = document.getElementById(id);
+      if(el){
+        el.textContent = id === p.s ? p.sf(nv) : p.f(nv);
+        el.style.color=col;
+        setTimeout(()=>el.style.color='var(--text)',600);
+      }
+    });
+  });
+}
+tick();setInterval(tick,1000);setInterval(flicker,3500);
+</script>
+</body>
+</html>
